@@ -11,6 +11,7 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
+    wait bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Wingman eat your brains"))
 
 @client.event
 async def on_message(message):
