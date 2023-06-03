@@ -10,6 +10,10 @@ from discord.ext import commands
 # Import libraries
 import requests
 
+# Import cogs
+from cogs.greetings import Greetings
+from cogs.valorant import Valorant
+
 # Import modules
 import utils
 
@@ -57,88 +61,10 @@ bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 async def on_ready():
     """Runs when the bot is ready"""
     utils.print_line()
+    await bot.add_cog(Greetings(bot))
+    await bot.add_cog(Valorant(bot))
     print("Beep-bop! K1-B0 is ready to roll!")
     utils.print_line()
-
-@bot.command()
-async def valo(ctx, user):
-    """TODO WRITE DOCSTRING"""
-
-    # Split the user by the # to get the username and discriminator
-    user = user.split("#")
-    username = user[0]
-    discriminator = user[1]
-
-    # Get the user's information
-    response_user = requests.get(URL + "account/" + username + "/" + discriminator)
-    response_user = response_user.json()
-
-    player = ValorantUser(
-        response_user["data"]["name"],
-        response_user["data"]["tag"],
-        response_user["data"]["card"]["small"],
-        response_user["data"]["account_level"],
-    )
-
-    # Print the user's information
-    embed = discord.Embed(title="Keebos Valorant Tracker", color=COLOR_VALO)
-    embed.set_thumbnail(url=player.card)
-    embed.add_field(
-        name=player.name + "#" + player.tag,
-        value="Level " + str(player.level),
-        inline=True,
-    )
-    await ctx.send(embed=embed)
-
-    # Get the users match history
-    response_match = requests.get(URL_MATCH + username + "/" + discriminator)
-    response_match = response_match.json()
-
-    for match in response_match["data"]:
-        team = ""
-        character = ""
-        portrait = ""
-        stats = [0, 0, 0]
-        result = "Defeat"
-        color = COLOR_DEFEAT
-        round = [0, 0]
-
-        for player in match["players"]["all_players"]:
-            if player["name"] == username and player["tag"] == discriminator:
-                team = player["team"]
-                character = player["character"]
-                stats[0] = player["stats"]["kills"]
-                stats[1] = player["stats"]["deaths"]
-                stats[2] = player["stats"]["assists"]
-                portrait = player["assets"]["agent"]["small"]
-
-        # Print all relevant infos
-        print(team)
-        if match["teams"][team.lower()]["has_won"] is True:
-            result = "Victory"
-            color = COLOR_VICTORY
-
-        round = [
-            match["teams"][team.lower()]["rounds_won"],
-            match["teams"][team.lower()]["rounds_lost"],
-        ]
-
-        new_match = ValorantMatch(
-            match["metadata"]["map"], match["metadata"]["mode"], team, result
-        )
-
-        embed = discord.Embed(
-            title=result + f" - {round[0]} / {round[1]}", colour=color
-        )
-
-        embed.set_author(name=new_match.location + " - " + new_match.mode)
-
-        embed.set_footer(
-            text=character + f"  -  {stats[0]} / {stats[1]} / {stats[2]}",
-            icon_url=portrait,
-        )
-
-        await ctx.send(embed=embed)
 
 # -----------------------------------------------------------------------------
 # Run K1-B0
