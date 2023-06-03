@@ -1,8 +1,20 @@
+"""K1-B0 is a discord bot inspired by the character from Danganronpa 3"""
+
+# -----------------------------------------------------------------------------
+# Imports
+
+# Import discord library
 import discord
 from discord.ext import commands
 
+# Import libraries
 import requests
-import json
+
+# Import modules
+import utils
+
+# -----------------------------------------------------------------------------
+# Constants
 
 COMMAND_PREFIX = "?"
 URL = "https://api.henrikdev.xyz/valorant/v1/"
@@ -11,6 +23,9 @@ URL_MATCH = "https://api.henrikdev.xyz/valorant/v3/matches/eu/"
 COLOR_VALO = 0xFE3939
 COLOR_VICTORY = 0x00FF00
 COLOR_DEFEAT = 0xFF0000
+
+# -----------------------------------------------------------------------------
+# Setup
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -38,6 +53,12 @@ class ValorantMatch:
 
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 
+@bot.event
+async def on_ready():
+    """Runs when the bot is ready"""
+    utils.print_line()
+    print("Beep-bop! K1-B0 is ready to roll!")
+    utils.print_line()
 
 @bot.command()
 async def valo(ctx, user):
@@ -91,7 +112,9 @@ async def valo(ctx, user):
                 stats[2] = player["stats"]["assists"]
                 portrait = player["assets"]["agent"]["small"]
 
-        if match["teams"][team.lower()]["has_won"] == True:
+        # Print all relevant infos
+        print(team)
+        if match["teams"][team.lower()]["has_won"] is True:
             result = "Victory"
             color = COLOR_VICTORY
 
@@ -117,5 +140,6 @@ async def valo(ctx, user):
 
         await ctx.send(embed=embed)
 
-
+# -----------------------------------------------------------------------------
+# Run K1-B0
 bot.run("MTA1NzQzMTUxNzI1MDQ3Mzk5NA.GF8Piy.0d85mzmOqE6rPd0YcZLNQeJysjaiLXz1wB2MgU")
