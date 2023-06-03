@@ -121,6 +121,14 @@ class Valorant(commands.Cog):
                 inline=False
             )
 
+        tracker_url = "https://tracker.gg/valorant/profile/riot/" + user[0] + "%23" + user[1] + "/overview"
+
+        embed.add_field(
+                name="Links",
+                value=f"[Tracker.gg]({tracker_url})",
+                inline=False
+            )
+
         embed.set_thumbnail(url=card)
 
         embed.set_footer(text="❤️ Keebos Valorant Tracker")
