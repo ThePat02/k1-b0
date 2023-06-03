@@ -43,7 +43,7 @@ async def on_ready():
     utils.print_line()
     await bot.add_cog(Greetings(bot))
     await bot.add_cog(Valorant(bot))
-    wait client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Wingman sleep"))
+    wait bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Wingman sleep"))
     print("Beep-bop! K1-B0 is ready to roll!")
     utils.print_line()
 
