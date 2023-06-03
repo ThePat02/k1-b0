@@ -35,26 +35,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 
-class ValorantUser:
-    """A valornt user object that contains the user's information"""
-
-    def __init__(self, name, tag, card, level):
-        self.name = name
-        self.tag = tag
-        self.card = card
-        self.level = level
-
-
-class ValorantMatch:
-    """A valorant match object that contains the match's information"""
-
-    def __init__(self, location, mode, team, result):
-        self.location = location
-        self.mode = mode
-        self.team = team
-        self.result = result
-
-
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 
 @bot.event
@@ -63,6 +43,7 @@ async def on_ready():
     utils.print_line()
     await bot.add_cog(Greetings(bot))
     await bot.add_cog(Valorant(bot))
+    wait client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Wingman sleep"))
     print("Beep-bop! K1-B0 is ready to roll!")
     utils.print_line()
 
