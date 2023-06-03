@@ -3,12 +3,12 @@
 # -----------------------------------------------------------------------------
 # Imports
 
+# Import libraries
+import datetime
+
 # Import discord library
 import discord
 from discord.ext import commands, tasks
-
-# Import libraries
-import datetime
 
 # Import cogs
 from cogs.greetings import Greetings
@@ -21,12 +21,6 @@ import utils
 # Constants
 
 COMMAND_PREFIX = "?"
-URL = "https://api.henrikdev.xyz/valorant/v1/"
-URL_MATCH = "https://api.henrikdev.xyz/valorant/v3/matches/eu/"
-
-COLOR_VALO = 0xFE3939
-COLOR_VICTORY = 0x00FF00
-COLOR_DEFEAT = 0xFF0000
 
 # -----------------------------------------------------------------------------
 # Setup
@@ -41,23 +35,32 @@ bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 async def on_ready():
     """Runs when the bot is ready"""
     utils.print_line()
-    await bot.add_cog(Greetings(bot))
-    await bot.add_cog(Valorant(bot))
-    print("Beep-bop! K1-B0 is ready to roll!")
+
+    await bot.add_cog(Greetings(bot)) # Add greetings cog
+    await bot.add_cog(Valorant(bot)) # Add valorant cog
+
+    utils.botLog("Beep-bop! K1-B0 is ready to roll!") # Print ready message
+
     utils.print_line()
 
-    change_status.start()
+    change_status.start() # Start status loop
+
 
 @tasks.loop(minutes=30)
 async def change_status():
-    """Changes the bot's status"""
+    """Updates the bot's status every 30 minutes"""
+    utils.botLog("Started status loop.")
+
     # Get time
     now = datetime.datetime.now() 
+    # Set default status
     status = "Wingman do stuff"
 
+    # Get hour
     hour = now.hour + 2
     if hour >= 24: hour -= 24
 
+    # Set status
     if hour >= 6 and hour < 9:
         status = "Wingman wake up"
     elif hour >= 9 and hour < 12:
@@ -75,6 +78,7 @@ async def change_status():
     elif hour >= 0 and hour < 6:
         status = "Wingman sleeping deeply"
 
+    # Change status
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
 
 
