@@ -31,34 +31,32 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 
+
 @bot.event
 async def on_ready():
     """Runs when the bot is ready"""
     utils.print_line()
 
-    await bot.add_cog(Greetings(bot)) # Add greetings cog
-    await bot.add_cog(Valorant(bot)) # Add valorant cog
+    await bot.add_cog(Greetings(bot))  # Add greetings cog
+    await bot.add_cog(Valorant(bot))  # Add valorant cog
 
-    utils.botLog("Beep-bop! K1-B0 is ready to roll!") # Print ready message
+    utils.botLog("Beep-bop! K1-B0 is ready to roll!")  # Print ready message
 
     utils.print_line()
 
-    change_status.start() # Start status loop
+    change_status.start()  # Start status loop
+    utils.botLog("Started status loop.")
 
 
 @tasks.loop(minutes=30)
 async def change_status():
     """Updates the bot's status every 30 minutes"""
-    utils.botLog("Started status loop.")
+    now = datetime.datetime.now()  # Get time
+    status = "Wingman do stuff"  # Set default status
 
-    # Get time
-    now = datetime.datetime.now() 
-    # Set default status
-    status = "Wingman do stuff"
-
-    # Get hour
-    hour = now.hour + 2
-    if hour >= 24: hour -= 24
+    hour = now.hour + 2  # Get hour
+    if hour >= 24: # If hour is greater than 24, subtract 24
+        hour -= 24  
 
     # Set status
     if hour >= 6 and hour < 9:
