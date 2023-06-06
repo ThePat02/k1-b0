@@ -81,7 +81,6 @@ class Valorant(commands.Cog):
             match_timestamp = match["metadata"]["game_start_patched"]
 
             match_character = ""
-            match_character_icon = ""
             match_team = ""
             match_stats = [0, 0, 0]
             match_shots = [0, 0, 0]
@@ -92,7 +91,6 @@ class Valorant(commands.Cog):
             for player in match["players"]["all_players"]:
                 if player["name"] == user[0] and player["tag"] == user[1]:
                     match_character = player["character"]
-                    match_character_icon = player["assets"]["agent"]["small"]
                     match_team = player["team"].lower()
                     match_stats = [
                         player["stats"]["kills"],
@@ -129,7 +127,7 @@ class Valorant(commands.Cog):
                 name=result_icon + "  " + match_mode + "  " + match_icon + rounds_won_string + "  |  " + match_map,
                 value=match_character + f" ({match_stats[0]}/{match_stats[1]}/{match_stats[2]})" + content_hs_rate + "\n" + match_timestamp,
                 inline=False
-            )
+            ) # Add the match field
 
         user[0] = user[0].replace(" ", "%20") # Replace blank spaces with %20 again
         tracker_url = "https://tracker.gg/valorant/profile/riot/" + user[0] + "%23" + user[1] + "/overview"
@@ -138,11 +136,10 @@ class Valorant(commands.Cog):
                 name="Links",
                 value=f"[Tracker.gg]({tracker_url})",
                 inline=False
-            )
+        ) # Add the links field
 
-        embed.set_thumbnail(url=card)
+        embed.set_thumbnail(url=card) # Set the thumbnail
+        embed.set_footer(text="❤️ Keebos Valorant Tracker") # Set the footer
 
-        embed.set_footer(text="❤️ Keebos Valorant Tracker")
 
-        # Send the embed
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed) # Send the embed
