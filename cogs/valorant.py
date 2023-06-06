@@ -114,16 +114,19 @@ class Valorant(commands.Cog):
             match_rounds_won = 0
             match_rounds_lost = 0
             has_won = False
+            
+            rounds_won_string = ""
 
             if match_mode != "Deathmatch":
                 match_rounds_won = match['teams'][match_team]['rounds_won']
                 match_rounds_lost = match['teams'][match_team]['rounds_lost']
                 has_won = match['teams'][match_team]['has_won']
+                rounds_won_string = "  |  " + str(match_rounds_won) + " - " + str(match_rounds_lost)
                 if has_won: result_icon = "🟩"
                 else: result_icon = "🟥"
 
             embed.add_field(
-                name=result_icon + "  " + match_mode + "  " + match_icon + "  |  " + str(match_rounds_won) + " - " + str(match_rounds_lost) + "  |  " + match_map,
+                name=result_icon + "  " + match_mode + "  " + match_icon + rounds_won_string + "  |  " + match_map,
                 value=match_character + f" ({match_stats[0]}/{match_stats[1]}/{match_stats[2]})" + content_hs_rate + "\n" + match_timestamp,
                 inline=False
             )
