@@ -17,6 +17,7 @@ class Valorant(commands.Cog):
     async def valo(self, ctx, user):
         """Fetches the user's Valorant information and displays it"""
         user = user.split("#") # Split the user by the hashtag
+        user[0] = user[0].replace(" ", "%20") # Replace blank spaces with %20
 
         # Get the user's information
         user_info = requests.get(
@@ -46,13 +47,18 @@ class Valorant(commands.Cog):
         user_info = user_info.json()
         user_mmr = user_mmr.json()
         last_matches = last_matches.json()
+        
+        user[0] = user[0].replace("%20", " ") # Replace %20 with blank spaces again
 
         # Setup user information
         username = user_info["data"]["name"] + "#" + user_info["data"]["tag"]
         card = user_info["data"]["card"]["small"]
         level = user_info["data"]["account_level"]
-        rank = user_mmr['data']['currenttierpatched']
-        rank_badge = user_mmr['data']['images']['small']
+        rank = "Unranked"
+        rank_badge = ""
+        if user_mmr['data']['currenttierpatched'] is not None:
+            rank = user_mmr['data']['currenttierpatched']
+            rank_badge = user_mmr['data']['images']['small']
 
         # Setup embed
         embed = discord.Embed(title=username + "  •  Level " + str(level),
@@ -108,6 +114,7 @@ class Valorant(commands.Cog):
             match_rounds_won = 0
             match_rounds_lost = 0
             has_won = False
+
             if match_mode != "Deathmatch":
                 match_rounds_won = match['teams'][match_team]['rounds_won']
                 match_rounds_lost = match['teams'][match_team]['rounds_lost']
@@ -121,6 +128,7 @@ class Valorant(commands.Cog):
                 inline=False
             )
 
+        user[0] = user[0].replace(" ", "%20") # Replace blank spaces with %20 again
         tracker_url = "https://tracker.gg/valorant/profile/riot/" + user[0] + "%23" + user[1] + "/overview"
 
         embed.add_field(
