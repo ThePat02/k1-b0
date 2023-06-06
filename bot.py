@@ -76,7 +76,7 @@ async def change_status():
     elif hour >= 22 and hour < 24:
         status = "Wingman sleep"
     elif hour >= 0 and hour < 6:
-        status = "Wingman sleeping deeply"
+        status = "Wingman sleep deeply"
 
     # Change status
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
