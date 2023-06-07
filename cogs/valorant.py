@@ -56,16 +56,26 @@ class Valorant(commands.Cog):
         level = user_info["data"]["account_level"]
         rank = "Unranked"
         rank_badge = ""
+        rank_points = ""
         if user_mmr['data']['currenttierpatched'] is not None:
             rank = user_mmr['data']['currenttierpatched']
             rank_badge = user_mmr['data']['images']['small']
+            
+            rank_points = user_mmr['data']['ranking_in_tier']
+            a = rank_points
+            rank_points = " • " + str(rank_points) + " / 100 • ["
+            for i in range(0, 100, 10):
+                if i > a: rank_points += "-"
+                else: rank_points += "+"
+            rank_points += "]"
+                
 
         # Setup embed
         embed = discord.Embed(title=username + "  •  Level " + str(level),
                             description="",      
                             colour=0xFE3939)
 
-        embed.set_author(name=rank,
+        embed.set_author(name=rank + rank_points,
                         icon_url=rank_badge)
         
         for match in last_matches["data"]:
