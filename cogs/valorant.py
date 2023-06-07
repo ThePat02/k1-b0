@@ -27,6 +27,14 @@ class Valorant(commands.Cog):
             user[1],
             timeout=10
         )
+   
+        if user_info.status_code == 404:
+            await ctx.send("I couldn't find that user. Make sure you typed it correctly. All usernames are **case-sensitive!*")
+            return
+        elif user_info.status_code == 500:
+            await ctx.send("Something went wrong. Please try again later.")
+            return
+
         user_mmr = requests.get(
             API_URL + "mmr/eu" +
             "/" +
