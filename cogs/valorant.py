@@ -42,6 +42,10 @@ class Valorant(commands.Cog):
         user_info = user_info.json()
         user_mmr = user_mmr.json()
         last_matches = last_matches.json()
+        
+        # Redefine username
+        user[0] = user_info["data"]["name"]
+        user[1] = user_info["data"]["tag"]
 
         user[0] = user[0].replace("%20", " ")  # Replace %20 with blank spaces again
 
