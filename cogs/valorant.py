@@ -27,9 +27,7 @@ class Valorant(commands.Cog):
         )
 
         if user_info.status_code == 404:
-            await ctx.send(
-                "I couldn't find that user. Make sure you typed it correctly. All usernames are **case-sensitive!*"
-            )
+            await ctx.send("I couldn't find that user. Please try again.")
             return
         elif user_info.status_code == 500:
             await ctx.send("Something went wrong. Please try again later.")
@@ -59,10 +57,10 @@ class Valorant(commands.Cog):
             rank_badge = user_mmr["data"]["images"]["small"]
 
             rank_points = user_mmr["data"]["ranking_in_tier"]
-            a = rank_points
+            rank_points_counter = rank_points
             rank_points = " • " + str(rank_points) + " / 100 • ["
             for i in range(0, 100, 10):
-                if i > a:
+                if i > rank_points_counter:
                     rank_points += "-"
                 else:
                     rank_points += "+"
