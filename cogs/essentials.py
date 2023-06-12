@@ -1,14 +1,14 @@
-"""Greetings cog for the bot."""
+"""Essentials cog for the bot."""
 
 import discord
 import discord.ext.commands as commands
 
-class Greetings(commands.Cog):
-    """Greetings cog for the bot."""
+class Essentials(commands.Cog):
+    """Essentials cog for the bot."""
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
-        print("Greetings cog loaded.")
+        print("Essentials cog loaded.")
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
