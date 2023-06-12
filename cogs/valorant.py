@@ -4,8 +4,118 @@ import discord
 import discord.ext.commands as commands
 import requests
 
+import mysql.connector
+
+
 API_URL = "https://api.henrikdev.xyz/valorant/v1/"
 API_URL_MATCH = "https://api.henrikdev.xyz/valorant/v3/matches/eu/"
+
+
+def db_connect():
+    """Connects to the database"""
+    cnx = mysql.connector.connect(
+        host='db-eu-02.sparkedhost.us',
+        port=3306,
+        user='u96181_SlSwXhCZ2F',
+        password='XMK3v1aO!sq==CXaEMl+.ufz',
+        database='s96181_KeebosBrain'
+    )
+    return cnx
+
+
+def db_add_user(discord_id, valorant_id):
+    """Adds a user to the database"""
+    # Connect to the database
+    cnx = db_connect()
+    
+    cursor = cnx.cursor() # Create a cursor
+
+    # Define the query
+    insert_query = """
+        INSERT INTO valorant_users (discord, valorant)
+        VALUES (%s, %s)
+    """
+    entry_data = (discord_id, valorant_id)
+
+    cursor.execute(insert_query, entry_data) # Execute the query
+    cnx.commit() # Commit the changes
+      
+    cursor.close() # Close the cursor
+    cnx.close() # Close the connection
+
+
+def db_remove_user(discord_id):
+    """Removes a user from the database"""
+    # Connect to the database
+    cnx = db_connect()
+    
+    cursor = cnx.cursor() # Create a cursor
+    
+    # Define the query
+    delete_query = """
+        DELETE FROM valorant_users
+        WHERE discord = %s
+    """
+    entry_data = (discord_id,)
+
+    cursor.execute(delete_query, entry_data) # Execute the query
+    cnx.commit() # Commit the changes
+    
+    cursor.close() # Close the cursor
+    cnx.close() # Close the connection
+
+
+def db_get_user_valorant(discord_id):
+    """Gets a user's Valorant ID from the database"""
+    # Connect to the database
+    cnx = db_connect()
+    
+    cursor = cnx.cursor() # Create a cursor
+    
+    # Trim discord ID
+    discord_id = discord_id.replace("<", "")
+    discord_id = discord_id.replace(">", "")
+    discord_id = discord_id.replace("@", "")
+    
+    # Define the query
+    select_query = """
+        SELECT valorant
+        FROM valorant_users
+        WHERE discord = %s
+    """
+    entry_data = (discord_id,)
+
+    cursor.execute(select_query, entry_data) # Execute the query
+    result = cursor.fetchone() # Get the result
+    
+    cursor.close() # Close the cursor
+    cnx.close() # Close the connection
+
+    return result[0]
+
+
+def db_user_exists(discord_id) -> bool:
+    """Checks if a user exists in the database"""
+    # Connect to the database
+    cnx = db_connect()
+    
+    cursor = cnx.cursor() # Create a cursor
+    
+    # Define the query
+    select_query = """
+        SELECT COUNT(*)
+        FROM valorant_users
+        WHERE discord = %s
+    """
+    entry_data = (discord_id,)
+
+    cursor.execute(select_query, entry_data) # Execute the query
+    result = cursor.fetchone() # Get the result
+    
+    cursor.close() # Close the cursor
+    cnx.close() # Close the connection
+
+    return result[0] > 0
 
 
 class Valorant(commands.Cog):
@@ -16,8 +126,36 @@ class Valorant(commands.Cog):
         print("Valorant cog loaded.")
 
     @commands.command()
+    async def link(self, ctx, valorant_id):
+        """Links a user's Discord account to their Valorant account"""
+        if not db_user_exists(ctx.author.id):
+            db_add_user(ctx.author.id, valorant_id)
+            await ctx.send("I've linked your Discord account to your Valorant account. ^^")
+        else:
+            db_remove_user(ctx.author.id)
+            db_add_user(ctx.author.id, valorant_id)
+            await ctx.send("I have updated your Valorant account. ^^")
+
+    @commands.command()
+    async def unlink(self, ctx):
+        """Unlinks a user's Discord account from their Valorant account"""
+        if db_user_exists(ctx.author.id):
+            db_remove_user(ctx.author.id)
+            await ctx.send("I've unlinked your Discord account from your Valorant account. :(")
+        else:
+            await ctx.send("You don't have a Valorant account linked to your Discord account. :/")
+
+    @commands.command()
     async def valo(self, ctx, user):
         """Fetches the user's Valorant information and displays it"""
+        if user.startswith("<@") and user.endswith(">"):
+            user = user[2:-1] # Trim the first 2 and last 1 characters
+
+            if not db_user_exists(user):
+                await ctx.send("That user doesn't have a Valorant account linked to their Discord account. Use `?link <name#tag>` to change that!")
+                return
+            user = db_get_user_valorant(user)
+        
         user = user.split("#")  # Split the user by the hashtag
         user[0] = user[0].replace(" ", "%20")  # Replace blank spaces with %20
 
