@@ -18,7 +18,7 @@ class Essentials(commands.Cog):
             await channel.send(f'Welcome to Antarctica, {member.mention}. I am K1-B0, the Ultimate Robot!')
 
     @commands.command()
-    async def commands(self, ctx):
+    async def help(self, ctx):
         """Sends information about the bot's commands."""
         embed = discord.Embed(title="Keebo, The Ultimate Robot",
                             description="I am K1-B0, the Ultimate Robot, but you can call me Keebo. I have several commands that will make your life easier.",
@@ -27,10 +27,10 @@ class Essentials(commands.Cog):
         embed.set_author(name="K1-B0")
 
         embed.add_field(name="Essentials",
-                        value="`?commands`:\nShows a list of my available commands.",inline=False)
+                        value="`?help`:\nShows a list of my available commands.", inline=False)
         
         embed.add_field(name="Valorant",
-                        value="`?valo <Username#Tag>`:\nRetrieves and displays the Valorant profile information and the most recent matches of the specified user.\n\n`?valo @DiscordUser`:\nRetrieves and displays the Valorant profile information and the most recent matches of the Discord user, provided they have linked their Riot-ID.\n\n`?link <Username#Tag>`:\nEstablishes a connection between your Riot-ID and Discord-ID. If the link already exists, it will update the associated ID.\n\n`?unlink`:\nRemoves the link between your Discord-ID and the associated Riot-ID.")
+                        value="`?valo <Username#Tag>`:\nRetrieves and displays the Valorant profile information and the most recent matches of the specified user.\n\n`?valo @DiscordUser`:\nRetrieves and displays the Valorant profile information and the most recent matches of the Discord user, provided they have linked their Riot-ID.\n\n`?link <Username#Tag>`:\nEstablishes a connection between your Riot-ID and Discord-ID. If the link already exists, it will update the associated ID.\n\n`?unlink`:\nRemoves the link between your Discord-ID and the associated Riot-ID.", inline=False)
 
         embed.set_image(url="https://preview.redd.it/z4rg8ov556151.png?auto=webp&s=a74a7ebd016d4f99c164c0a473d5a5af97b52392")
 

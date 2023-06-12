@@ -37,6 +37,8 @@ async def on_ready():
     """Runs when the bot is ready"""
     utils.print_line()
 
+    bot.remove_command("help") # Remove default help command
+
     await bot.add_cog(Essentials(bot))  # Add greetings cog
     await bot.add_cog(Valorant(bot))  # Add valorant cog
 
