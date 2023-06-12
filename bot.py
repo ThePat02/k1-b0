@@ -52,35 +52,33 @@ async def on_ready():
 
 @tasks.loop(minutes=30)
 async def change_status():
-    """Updates the bot's status every 30 minutes"""
-    now = datetime.datetime.now()  # Get time
+    """Updates the bot's random status every 30 minutes"""
+    activity_type = discord.ActivityType.watching # Set default activity type
     status = "Wingman do stuff"  # Set default status
 
-    hour = now.hour + 2  # Get hour
-    if hour >= 24: # If hour is greater than 24, subtract 24
-        hour -= 24  
+    # Random status
+    status_id = utils.random_number(0, 5)
 
-    # Set status
-    if hour >= 6 and hour < 9:
-        status = "Wingman wake up"
-    elif hour >= 9 and hour < 12:
-        status = "Wingman plant the spike"
-    elif hour >= 12 and hour < 15:
-        status = "Wingman eat a snack"
-    elif hour >= 15 and hour < 18:
-        status = "Wingman play with Dizzy"
-    elif hour >= 18 and hour < 20:
-        status = "Wingman eat dinner"
-    elif hour >= 20 and hour < 22:
-        status = "Wingman working out"
-    elif hour >= 22 and hour < 24:
-        status = "Wingman sleep"
-    elif hour >= 0 and hour < 6:
-        status = "Wingman sleep deeply"
+    if status_id == 0:
+        activity_type = discord.ActivityType.listening
+        status = "Wingman's inside jokes"
+    elif status_id == 1:
+        activity_type = discord.ActivityType.watching
+        status = "Wingman defuse the spike"
+    elif status_id == 2:
+        activity_type = discord.ActivityType.playing
+        status = "with Wingman"
+    elif status_id == 3:
+        activity_type = discord.ActivityType.playing
+        status = "with Dizzy and Moshpit"
+    elif status_id == 4:
+        activity_type = discord.ActivityType.streaming
+        status = "Wingman's dance on TikTok"
+    elif status_id == 5:
+        activity_type = discord.ActivityType.watching
+        status = "Chamber nibble on Wingman"
 
-    # Change status
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
-
+    await bot.change_presence(activity=discord.Activity(type=activity_type, name=status))
 
 # -----------------------------------------------------------------------------
 # Run K1-B0
