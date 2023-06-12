@@ -12,16 +12,26 @@ class Essentials(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        """Sends a welcome message when a member joins the server."""
         channel = member.guild.system_channel
         if channel is not None:
-            await channel.send(f'Welcome {member.mention}.')
+            await channel.send(f'Welcome to Antarctica, {member.mention}. I am K1-B0, the Ultimate Robot!')
 
     @commands.command()
-    async def hello(self, ctx, *, member: discord.Member = None):
-        """Says hello"""
-        member = member or ctx.author
-        if self._last_member is None or self._last_member.id != member.id:
-            await ctx.send(f'Hello {member.name}~')
-        else:
-            await ctx.send(f'Hello {member.name}... This feels familiar.')
-        self._last_member = member
+    async def commands(self, ctx):
+        """Sends information about the bot's commands."""
+        embed = discord.Embed(title="Keebo, The Ultimate Robot",
+                            description="I am K1-B0, the Ultimate Robot, but you can call me Keebo. I have several commands that will make your life easier.",
+                            colour=0x00b0f4)
+
+        embed.set_author(name="K1-B0")
+
+        embed.add_field(name="Essentials",
+                        value="`?commands`:\nShows a list of my available commands.",inline=False)
+        
+        embed.add_field(name="Valorant",
+                        value="`?valo <Username#Tag>`:\nRetrieves and displays the Valorant profile information and the most recent matches of the specified user.\n\n`?valo @DiscordUser`:\nRetrieves and displays the Valorant profile information and the most recent matches of the Discord user, provided they have linked their Riot-ID.\n\n`?link <Username#Tag>`:\nEstablishes a connection between your Riot-ID and Discord-ID. If the link already exists, it will update the associated ID.\n\n`?unlink`:\nRemoves the link between your Discord-ID and the associated Riot-ID.")
+
+        embed.set_image(url="https://preview.redd.it/z4rg8ov556151.png?auto=webp&s=a74a7ebd016d4f99c164c0a473d5a5af97b52392")
+
+        await ctx.send(embed=embed)
