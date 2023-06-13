@@ -15,6 +15,12 @@ class Cinema(commands.Cog):
     @commands.command()
     async def movie(self, ctx, *, movie_query):
         """Queries the movie database for a movie"""
+        message_loading = await ctx.send("I'm scanning the archives...")
+        await message_loading.add_reaction("🎥")
+        await message_loading.add_reaction("🎞️")
+        await message_loading.add_reaction("📺")
+        await message_loading.add_reaction("💃")
+        
         moviedb = imdb.Cinemagoer() # Create imdb object
 
         result_movies = moviedb.search_movie(movie_query) # Search for movie
@@ -22,12 +28,16 @@ class Cinema(commands.Cog):
 
         movie = moviedb.get_movie(top_result.movieID) # Get movie data
         
+        imdb_url = moviedb.get_imdbURL(movie)
+        
         title = movie["title"]
         year = movie["year"]
         cover = movie["cover url"]
         plot = movie["plot"]
         rating = movie["rating"]
-        runtimes = movie["runtimes"]
+        
+        runtime = movie["runtimes"][0]
+        output_runtime = str(runtime) + " minutes"
         
         genres = movie["genres"]
         output_genres = ""
@@ -48,6 +58,9 @@ class Cinema(commands.Cog):
         directors = movie["director"]
         output_directors = ""
         for director in directors:
+            if not "name" in director:
+                continue
+            
             if output_directors != "":
                 output_directors += ", " + director["name"]
             else:
@@ -56,34 +69,53 @@ class Cinema(commands.Cog):
         writers = movie["writer"]
         output_writers = ""
         for writer in writers:
+            # if writer has key name
+            if not "name" in writer:
+                continue
+            
             if output_writers != "":
                 output_writers += ", " + writer["name"]
             else:
                 output_writers += writer["name"]
         
         cast = movie["cast"]
+        output_cast = ""
+        max_cast = 5
+        cast_count = 0
+        for actor in cast:
+            if cast_count >= max_cast:
+                break
+            
+            if not "name" in actor:
+                continue
+            
+            if output_cast != "":
+                output_cast += ", " + actor["name"]
+            else:
+                output_cast += actor["name"]
+            cast_count += 1
 
-        embed = discord.Embed(title=title,
-                            description=str(year) + " - " + runtimes[0] + " - " + str(rating) + " ⭐\n\nDirected by " +
+        embed = discord.Embed(title=title + " - " + str(rating) + " / 10 ⭐",
+                            description="\nDirected by " +
                             output_directors + "\nWritten by " + output_writers,
                             colour=0xffd500)
 
-        embed.set_author(name="Internet Movie Database")
+        embed.set_author(name=str(year) + " - " + output_runtime)
 
         embed.add_field(name="Plot",
                         value=plot[0], inline=False)
         embed.add_field(name="Cast",
-                        value="Tom, TOm, THom", inline=False)
+                        value=output_cast, inline=False)
         embed.add_field(name="Genres",
                         value=output_genres, inline=False)
         embed.add_field(name="Languages",
                         value=output_languages, inline=False)
         embed.add_field(name="Links",
-                        value="TODO imbd usw", inline=False)
+                        value="[Open on IMDb](" + imdb_url + ")", inline=False)
 
         embed.set_thumbnail(url=cover)
 
         embed.set_footer(text="❤️ Keebos IMDB Search")
 
+        await message_loading.delete()
         await ctx.send(embed=embed)
-    
