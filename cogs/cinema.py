@@ -33,7 +33,11 @@ class Cinema(commands.Cog):
         title = movie["title"]
         year = movie["year"]
         cover = movie["cover url"]
-        plot = movie["plot"]
+        
+        plot = "No plot found."
+        if "plot" in movie:
+            plot = movie["plot"]
+        
         rating = movie["rating"]
         
         runtime = movie["runtimes"][0]
@@ -115,7 +119,7 @@ class Cinema(commands.Cog):
 
         embed.set_thumbnail(url=cover)
 
-        embed.set_footer(text="❤️ Keebos IMDB Search")
+        embed.set_footer(text="❤️ Keebos IMDb Search")
 
         await message_loading.delete()
         await ctx.send(embed=embed)
