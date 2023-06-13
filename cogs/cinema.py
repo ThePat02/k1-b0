@@ -115,7 +115,7 @@ class Cinema(commands.Cog):
 
         embed.set_thumbnail(url=cover)
 
-        embed.set_footer(text="❤️ Keebos IMDB Search")
+        embed.set_footer(text="❤️ Keebos IMDb Search")
 
         await message_loading.delete()
         await ctx.send(embed=embed)
