@@ -47,7 +47,6 @@ async def on_ready():
     utils.print_line()
 
     change_status.start()  # Start status loop
-    utils.botLog("Started status loop.")
 
 
 @tasks.loop(minutes=30)
@@ -72,13 +71,14 @@ async def change_status():
         activity_type = discord.ActivityType.playing
         status = "with Dizzy and Moshpit"
     elif status_id == 4:
-        activity_type = discord.ActivityType.streaming
+        activity_type = discord.ActivityType.watching
         status = "Wingman's dance on TikTok"
     elif status_id == 5:
         activity_type = discord.ActivityType.watching
         status = "Chamber nibble on Wingman"
 
     await bot.change_presence(activity=discord.Activity(type=activity_type, name=status))
+    utils.botLog("Started status loop.")
 
 # -----------------------------------------------------------------------------
 # Run K1-B0
