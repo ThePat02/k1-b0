@@ -27,7 +27,7 @@ def db_add_user(discord_id, valorant_id):
     """Adds a user to the database"""
     # Connect to the database
     cnx = db_connect()
-    
+
     cursor = cnx.cursor() # Create a cursor
 
     # Define the query
@@ -39,7 +39,7 @@ def db_add_user(discord_id, valorant_id):
 
     cursor.execute(insert_query, entry_data) # Execute the query
     cnx.commit() # Commit the changes
-      
+
     cursor.close() # Close the cursor
     cnx.close() # Close the connection
 
@@ -48,9 +48,9 @@ def db_remove_user(discord_id):
     """Removes a user from the database"""
     # Connect to the database
     cnx = db_connect()
-    
+
     cursor = cnx.cursor() # Create a cursor
-    
+
     # Define the query
     delete_query = """
         DELETE FROM valorant_users
@@ -60,7 +60,7 @@ def db_remove_user(discord_id):
 
     cursor.execute(delete_query, entry_data) # Execute the query
     cnx.commit() # Commit the changes
-    
+
     cursor.close() # Close the cursor
     cnx.close() # Close the connection
 
@@ -69,14 +69,14 @@ def db_get_user_valorant(discord_id):
     """Gets a user's Valorant ID from the database"""
     # Connect to the database
     cnx = db_connect()
-    
+
     cursor = cnx.cursor() # Create a cursor
-    
+
     # Trim discord ID
     discord_id = discord_id.replace("<", "")
     discord_id = discord_id.replace(">", "")
     discord_id = discord_id.replace("@", "")
-    
+
     # Define the query
     select_query = """
         SELECT valorant
@@ -87,7 +87,7 @@ def db_get_user_valorant(discord_id):
 
     cursor.execute(select_query, entry_data) # Execute the query
     result = cursor.fetchone() # Get the result
-    
+
     cursor.close() # Close the cursor
     cnx.close() # Close the connection
 
@@ -98,9 +98,9 @@ def db_user_exists(discord_id) -> bool:
     """Checks if a user exists in the database"""
     # Connect to the database
     cnx = db_connect()
-    
+
     cursor = cnx.cursor() # Create a cursor
-    
+
     # Define the query
     select_query = """
         SELECT COUNT(*)
@@ -111,7 +111,7 @@ def db_user_exists(discord_id) -> bool:
 
     cursor.execute(select_query, entry_data) # Execute the query
     result = cursor.fetchone() # Get the result
-    
+
     cursor.close() # Close the cursor
     cnx.close() # Close the connection
 
@@ -155,7 +155,7 @@ class Valorant(commands.Cog):
                 await ctx.send("That user doesn't have a Valorant account linked to their Discord account. Use `?link <name#tag>` to change that!")
                 return
             user = db_get_user_valorant(user)
-        
+
         user = user.split("#")  # Split the user by the hashtag
         user[0] = user[0].replace(" ", "%20")  # Replace blank spaces with %20
 
@@ -192,7 +192,7 @@ class Valorant(commands.Cog):
         user_info = user_info.json()
         user_mmr = user_mmr.json()
         last_matches = last_matches.json()
-        
+
         # Redefine username
         user[0] = user_info["data"]["name"]
         user[1] = user_info["data"]["tag"]

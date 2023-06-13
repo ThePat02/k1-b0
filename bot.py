@@ -3,9 +3,6 @@
 # -----------------------------------------------------------------------------
 # Imports
 
-# Import libraries
-import datetime
-
 # Import discord library
 import discord
 from discord.ext import commands, tasks
