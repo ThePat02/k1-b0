@@ -160,21 +160,33 @@ class Valorant(commands.Cog):
         user[0] = user[0].replace(" ", "%20")  # Replace blank spaces with %20
 
         # Get the user's information
-        user_info = requests.get(
-            API_URL + "account/" + user[0] + "/" + user[1], timeout=10
-        )
+        try:
+            user_info = requests.get(
+                API_URL + "account/" + user[0] + "/" + user[1], timeout=10
+            )
+        except IndexError:
+            await ctx.send("Ouch. I think your input isn't a valid username...")
+            return
+        except requests.exceptions.Timeout:
+            await ctx.send("The Servers are taking too long to respond. :/")
+            return
 
+        # Handle response codes
         if user_info.status_code == 404:
-            await ctx.send("I couldn't find that user. Please try again.")
+            await ctx.send("Looks like that user doesn't exist. :/")
             return
-        elif user_info.status_code == 500:
-            await ctx.send("Something went wrong. Please try again later.")
+        elif user_info.status_code != 200:
+            await ctx.send("Something went wrong. Not exactly sure what, though. :/")
             return
 
-        user_mmr = requests.get(
-            API_URL + "mmr/eu" + "/" + user[0] + "/" + user[1], timeout=10
-        )
-        last_matches = requests.get(API_URL_MATCH + user[0] + "/" + user[1], timeout=10)
+        try:
+            user_mmr = requests.get(
+                API_URL + "mmr/eu" + "/" + user[0] + "/" + user[1], timeout=10
+            )
+            last_matches = requests.get(API_URL_MATCH + user[0] + "/" + user[1], timeout=10)
+        except requests.exceptions.Timeout:
+            ctx.send("The Servers are taking too long to respond. :/")
+            return
 
         # Convert the response to JSON
         user_info = user_info.json()
