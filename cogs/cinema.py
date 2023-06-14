@@ -32,9 +32,18 @@ class Cinema(commands.Cog):
         
         title = movie["title"]
         year = movie["year"]
-        cover = movie["cover url"]
-        plot = movie["plot"]
-        rating = movie["rating"]
+        
+        cover = None
+        if "cover url" in movie:
+            cover = movie["cover url"]
+        
+        plot = "N/A"
+        if "plot" in movie:
+            plot = movie["plot"]
+        
+        rating = "No rating found."
+        if "rating" in movie:
+            rating = movie["rating"]
         
         runtime = movie["runtimes"][0]
         output_runtime = str(runtime) + " minutes"
