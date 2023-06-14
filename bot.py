@@ -11,6 +11,7 @@ from discord.ext import commands, tasks
 from cogs.essentials import Essentials
 from cogs.valorant import Valorant
 from cogs.cinema import Cinema
+from cogs.trivia import Trivia
 
 # Import modules
 import utils
