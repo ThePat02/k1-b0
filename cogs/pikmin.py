@@ -63,3 +63,8 @@ class Database:
         query = f"SELECT COUNT(*) FROM pikmin_user_data WHERE user_tag = {user_tag}"
         result = self.query(query) # Query the database
         return result[0] > 0 # Return if the user exists
+
+    def create_user(self, user_tag):
+        """Creates a user in the database"""
+        query = f"INSERT INTO pikmin_user_data (user_tag) VALUES ({user_tag})"
+        self.query(query)
