@@ -14,16 +14,19 @@ class Pikmin(commands.Cog):
         self._last_member = None
         print("Pikmin cog loaded.")
 
+
     @commands.command("pikmin")
     async def command_pikmin(self, ctx):
         """Default info command for the Pikmin cog."""
         await ctx.send("A Pikmin-Themed game is coming soon!")
         # TODO: Implement information screen
 
+
     @commands.command("camp")
     async def command_information(self, ctx):
         """Shows the camp of the user."""
         await self.verify_user(ctx, ctx.author)
+
 
     async def verify_user(self, ctx,  user : discord.User) -> None:
         """Verifies the user in the database."""
@@ -41,6 +44,7 @@ class Database:
     def __init__(self) -> None:
         pass
 
+
     def connect(self):
         """Connects to the database"""
         cnx = mysql.connector.connect(
@@ -51,6 +55,7 @@ class Database:
             database='s96181_KeebosBrain'
         )
         return cnx
+
 
     def query(self, query : str):
         """Queries the database."""
@@ -65,11 +70,13 @@ class Database:
 
         return result[0]
 
+
     def user_exists(self, user_tag) -> bool:
         """Checks if the user exists in the database"""
         query = f"SELECT COUNT(*) FROM pikmin_user_data WHERE user_tag = {user_tag}"
         result = self.query(query) # Query the database
         return result[0] > 0 # Return if the user exists
+
 
     def create_user(self, user_tag):
         """Creates a user in the database"""
