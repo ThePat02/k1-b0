@@ -1,4 +1,4 @@
-"""A simple Discord-Based game to celebrate the release of Pikmin 4"""
+#"""A simple Discord-Based game to celebrate the release of Pikmin 4"""
 
 import discord
 import discord.ext.commands as commands
@@ -16,6 +16,9 @@ class Pikmin(commands.Cog):
         print("Pikmin cog loaded.")
 
 
+    # TODO: Update the game state every 30 seconds
+
+
     @commands.command("pikmin")
     async def command_pikmin(self, ctx):
         """Default info command for the Pikmin cog."""
@@ -27,6 +30,13 @@ class Pikmin(commands.Cog):
     async def command_information(self, ctx):
         """Shows the camp of the user."""
         await self.verify_user(ctx, ctx.author)
+        # TODO: Implement camp screen
+
+
+    # TODO: COMMAND !garden
+
+
+    # TODO: COMMAND !plant
 
 
     async def verify_user(self, ctx,  user : discord.User) -> None:
