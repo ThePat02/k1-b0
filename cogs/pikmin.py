@@ -5,8 +5,15 @@ import discord.ext.commands as commands
 
 import mysql.connector
 
+
 # Constants
 MSG_WELCOME = "Welcome on board, Captain {0}!"
+
+ICON_PIKMIN_RED = "🔴" # TODO: Temporary icon
+ICON_PIKMIN_YELLOW = "🟡" # TODO: Temporary icon
+ICON_PIKMIN_BLUE = "🔵" # TODO: Temporary icon
+ICON_PIKMIN_PURPLE = "🟣" # TODO: Temporary icon
+
 
 class Pikmin(commands.Cog):
     """Pikmin cog for the bot."""
