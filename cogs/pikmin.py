@@ -46,7 +46,7 @@ class Database:
         pass
 
 
-    def connect(self):
+    def connect(self) -> mysql.connector.connection.MySQLConnection:
         """Connects to the database"""
         cnx = mysql.connector.connect(
             host='db-eu-02.sparkedhost.us',
@@ -79,7 +79,26 @@ class Database:
         return result[0] > 0 # Return if the user exists
 
 
-    def create_user(self, user_tag):
+    def create_user(self, user_tag) -> None:
         """Creates a user in the database"""
         query = f"INSERT INTO pikmin_user_data (user_tag) VALUES ({user_tag})"
+        self.query(query)
+
+
+    def delete_user(self, user_tag) -> None:
+        """Deletes a user from the database"""
+        query = f"DELETE FROM pikmin_user_data WHERE user_tag = {user_tag}"
+        self.query(query)
+
+
+    def get_user_data(self, user_tag) -> dict:
+        """Gets the user data as JSON from the database."""
+        query = f"SELECT * FROM pikmin_user_data WHERE user_tag = {user_tag}"
+        result = self.query(query)
+        return result[0].json()
+
+
+    def update_user_data(self, user_tag, data : dict) -> None:
+        """Updates the user data in the database."""
+        query = f"UPDATE pikmin_user_data SET {data} WHERE user_tag = {user_tag}"
         self.query(query)
