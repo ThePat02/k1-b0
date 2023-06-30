@@ -5,6 +5,7 @@ import discord.ext.commands as commands
 
 import mysql.connector
 
+MSG_WELCOME = "Welcome on board, Captain {0}!"
 
 class Pikmin(commands.Cog):
     """Pikmin cog for the bot."""
@@ -20,9 +21,19 @@ class Pikmin(commands.Cog):
         # TODO: Implement information screen
 
     @commands.command("camp")
-    async def command_user_info(self, ctx):
-        """Displays the informations of the user"""
-        user = ctx.author
+    async def command_information(self, ctx):
+        """Shows the camp of the user."""
+        await self.verify_user(ctx, ctx.author)
+
+    async def verify_user(self, ctx,  user : discord.User) -> None:
+        """Verifies the user in the database."""
+        # TODO: Replace "" with user.tag
+        database = Database()
+        # Check if the user exists in the database
+        if not database.user_exists(""):
+            # Create the user in the database
+            database.create_user("")
+            await ctx.send(MSG_WELCOME.format(user.name))
 
 
 class Database:
@@ -41,10 +52,6 @@ class Database:
         )
         return cnx
 
-    def disconnect(self, cnx):
-        """Disconnects from the database"""
-        cnx.close()
-
     def query(self, query : str):
         """Queries the database."""
         cnx = self.connect() # Connect to the database
@@ -58,7 +65,7 @@ class Database:
 
         return result[0]
 
-    def user_exists(self, user_tag : str) -> bool:
+    def user_exists(self, user_tag) -> bool:
         """Checks if the user exists in the database"""
         query = f"SELECT COUNT(*) FROM pikmin_user_data WHERE user_tag = {user_tag}"
         result = self.query(query) # Query the database
