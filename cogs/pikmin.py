@@ -5,6 +5,7 @@ import discord.ext.commands as commands
 
 import mysql.connector
 
+# Constants
 MSG_WELCOME = "Welcome on board, Captain {0}!"
 
 class Pikmin(commands.Cog):
