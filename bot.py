@@ -11,6 +11,7 @@ from discord.ext import commands, tasks
 from cogs.essentials import Essentials
 from cogs.valorant import Valorant
 from cogs.cinema import Cinema
+from cogs.pikmin import Pikmin
 
 # Import modules
 import utils
@@ -40,6 +41,7 @@ async def on_ready():
     await bot.add_cog(Essentials(bot))  # Add greetings cog
     await bot.add_cog(Valorant(bot))  # Add valorant cog
     await bot.add_cog(Cinema(bot))  # Add cinema cog
+    await bot.add_cog(Pikmin(bot))  # Add pikmin cog
 
     utils.botLog("Beep-bop! K1-B0 is ready to roll!")  # Print ready message
 
