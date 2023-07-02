@@ -46,6 +46,7 @@ async def on_ready():
     utils.print_line()
 
     change_status.start()  # Start status loop
+    utils.botLog("Started status loop.")
 
 
 @tasks.loop(minutes=30)
@@ -77,7 +78,7 @@ async def change_status():
         status = "Chamber nibble on Wingman"
 
     await bot.change_presence(activity=discord.Activity(type=activity_type, name=status))
-    utils.botLog("Started status loop.")
+    utils.botLog(f"Changed status to {status}.")
 
 # -----------------------------------------------------------------------------
 # Run K1-B0
