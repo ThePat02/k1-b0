@@ -31,9 +31,13 @@ class Cinema(commands.Cog):
         except IndexError:
             # If no results found
             await message_loading.delete()
-            msg = """I couldn't find any movies with that name.
-                Impossible! The archives must be incomplete."""
-            await ctx.send(msg)
+
+            error_message = (
+                "I couldn't find any movies with that name. "
+                "Impossible! The archives must be incomplete!"
+            )
+            
+            await ctx.send(error_message)
             return
 
         movie = moviedb.get_movie(top_result.movieID) # Get movie data
