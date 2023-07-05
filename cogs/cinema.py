@@ -1,4 +1,4 @@
-"""Essentials cog for the bot."""
+"""Cinema cog for the bot."""
 
 import discord
 import discord.ext.commands as commands
@@ -27,12 +27,14 @@ class Cinema(commands.Cog):
 
         try:
             # Try to get top result
-            top_result = result_movies[0] 
+            top_result = result_movies[0]
         except IndexError:
             # If no results found
             await message_loading.delete()
-            await ctx.send("I couldn't find any movies with that name. Impossible! The archives must be incomplete.")      
-            return    
+            msg = """I couldn't find any movies with that name.
+                Impossible! The archives must be incomplete."""
+            await ctx.send(msg)
+            return
 
         movie = moviedb.get_movie(top_result.movieID) # Get movie data
 
