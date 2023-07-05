@@ -20,11 +20,19 @@ class Cinema(commands.Cog):
         await message_loading.add_reaction("🎞️")
         await message_loading.add_reaction("📺")
         await message_loading.add_reaction("💃")
-        
+
         moviedb = imdb.Cinemagoer() # Create imdb object
 
         result_movies = moviedb.search_movie(movie_query) # Search for movie
-        top_result = result_movies[0] # Get top result
+
+        try:
+            # Try to get top result
+            top_result = result_movies[0] 
+        except IndexError:
+            # If no results found
+            await message_loading.delete()
+            await ctx.send("I couldn't find any movies with that name. Impossible! The archives must be incomplete.")      
+            return    
 
         movie = moviedb.get_movie(top_result.movieID) # Get movie data
         
