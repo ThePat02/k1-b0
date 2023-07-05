@@ -78,7 +78,6 @@ async def change_status():
         status = "Chamber nibble on Wingman"
 
     await bot.change_presence(activity=discord.Activity(type=activity_type, name=status))
-    utils.botLog(f"Changed status to {status}.")
 
 # -----------------------------------------------------------------------------
 # Run K1-B0
