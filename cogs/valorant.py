@@ -152,7 +152,11 @@ class Valorant(commands.Cog):
             user = user[2:-1] # Trim the first 2 and last 1 characters
 
             if not db_user_exists(user):
-                await ctx.send("That user doesn't have a Valorant account linked to their Discord account. Use `?link <name#tag>` to change that!")
+                await ctx.send(
+                    "That user doesn't have a Valorant account linked "
+                    "to their Discord account. Use `?link <name#tag>` "
+                    "to change that!"
+                )
                 return
             user = db_get_user_valorant(user)
 

@@ -36,7 +36,7 @@ class Cinema(commands.Cog):
                 "I couldn't find any movies with that name. "
                 "Impossible! The archives must be incomplete!"
             )
-            
+
             await ctx.send(error_message)
             return
 
