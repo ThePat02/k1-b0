@@ -2,6 +2,8 @@
 
 # -----------------------------------------------------------------------------
 # Imports
+import os
+from dotenv import load_dotenv
 
 # Import discord library
 import discord
@@ -14,6 +16,10 @@ from cogs.cinema import Cinema
 
 # Import modules
 import utils
+
+# -----------------------------------------------------------------------------
+# Load environment variables
+load_dotenv()
 
 # -----------------------------------------------------------------------------
 # Constants
@@ -81,4 +87,4 @@ async def change_status():
 
 # -----------------------------------------------------------------------------
 # Run K1-B0
-bot.run("MTA1NzQzMTUxNzI1MDQ3Mzk5NA.GF8Piy.0d85mzmOqE6rPd0YcZLNQeJysjaiLXz1wB2MgU")
+bot.run(str(os.getenv("API_KEY_DISCORD")))
