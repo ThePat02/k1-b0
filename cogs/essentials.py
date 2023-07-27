@@ -7,7 +7,6 @@ class Essentials(commands.Cog):
     """Essentials cog for the bot."""
     def __init__(self, bot):
         self.bot = bot
-        self._last_member = None
         print("Essentials cog loaded.")
 
     @commands.Cog.listener()
