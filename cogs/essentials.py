@@ -31,9 +31,10 @@ class Essentials(commands.Cog):
         embed.add_field(name="Valorant",
                         value="`?valo <Username#Tag>`:\nRetrieves and displays the Valorant profile information and the most recent matches of the specified user.\n\n`?valo @DiscordUser`:\nRetrieves and displays the Valorant profile information and the most recent matches of the Discord user, provided they have linked their Riot-ID.\n\n`?link <Username#Tag>`:\nEstablishes a connection between your Riot-ID and Discord-ID. If the link already exists, it will update the associated ID.\n\n`?unlink`:\nRemoves the link between your Discord-ID and the associated Riot-ID.", inline=False)
 
+        embed.add_field(name="League of Legends",
+                        value="`?lol <Username>`:\nRetrieves and displays the profile information and the most recent matches of the specified user. (EUW users only)", inline=False)
+
         embed.add_field(name="Cinema",
                         value="`?movie <Movie Name>`:\nRetrieves and displays information about the specified movie from IMDb.")
-
-        embed.set_image(url="https://preview.redd.it/z4rg8ov556151.png?auto=webp&s=a74a7ebd016d4f99c164c0a473d5a5af97b52392")
 
         await ctx.send(embed=embed)
