@@ -106,7 +106,7 @@ class League(commands.Cog):
                 case "RANKED_FLEX_SR":
                     queue_type = "Ranked Flex"
                 case _:
-                    break
+                    continue
 
             wins = league["wins"]
             losses = league["losses"]
