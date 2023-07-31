@@ -103,7 +103,7 @@ class League(commands.Cog):
             match queue_type:
                 case "RANKED_SOLO_5x5":
                     queue_type = "Ranked Solo/Duo"
-                case "RANKED_TEAM_5x5":
+                case "RANKED_FLEX_SR":
                     queue_type = "Ranked Flex"
                 case _:
                     break
