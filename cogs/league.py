@@ -43,8 +43,8 @@ class League(commands.Cog):
 
         # Convert response to JSON
         data_summoner = data_summoner.json()
-        
-        # Check if the response is valid 
+
+        # Check if the response is valid
         try:
             # If status_code is present, the request failed
             # If status_code is not present, the request succeeded
@@ -79,24 +79,24 @@ class League(commands.Cog):
         # Convert response to JSON
         data_matches = data_matches.json()
 
-        # Fill matches list with match objects   
+        # Fill matches list with match objects
         matches = []
         for match_id in data_matches:
             match = LeaugeMatch(ctx, summoner_puuid, match_id) # Create match object
             await match.get_match_data()       # Fill match object with data
             matches.append(match)              # Add match object to list
-        
+
         request_league = URL_API + ENDPOINT_LEAGUE + summoner_id + "?api_key=" + RIOT_API_KEY
-        
+
         # Try to get ranks
         try:
             data_league = requests.get(request_league, timeout=5)
         except requests.exceptions.Timeout:
             await ctx.send(MSG_ERROR_TIMEOUT)
             return
-        
+
         data_league = data_league.json() # Convert response to JSON
-        
+
         result_league = ""
         for league in data_league:
             queue_type = league["queueType"]
@@ -107,17 +107,17 @@ class League(commands.Cog):
                     queue_type = "Ranked Flex"
                 case _:
                     break
-            
+
             wins = league["wins"]
             losses = league["losses"]
             league_points = league["leaguePoints"]
-            
+
             tier = league["tier"]
             rank = league["rank"]
-            
+
             result = tier + " " + rank + " (" + str(league_points) + " LP) • " + str(wins) + "W/" + str(losses) + "L (" + queue_type + ")\n"
             result_league += result
-        
+
         embed = discord.Embed(title=summoner_name + " • Level " + str(summoner_level),
                             description=result_league,
                             colour=0x091428)
@@ -132,7 +132,7 @@ class League(commands.Cog):
         # TODO: Add tracker and op links
         #embed.add_field(name="Links",
         #                value="Tracker.gg • OP.gg", inline=False)
-        
+
         # Set the summoner icon
         embed.set_thumbnail(url=URL_API_ICON[0] + str(summoner_icon) + URL_API_ICON[1])
 
