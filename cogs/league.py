@@ -103,10 +103,10 @@ class League(commands.Cog):
             match queue_type:
                 case "RANKED_SOLO_5x5":
                     queue_type = "Ranked Solo/Duo"
-                case "RANKED_TEAM_5x5":
+                case "RANKED_FLEX_SR":
                     queue_type = "Ranked Flex"
                 case _:
-                    break
+                    continue
 
             wins = league["wins"]
             losses = league["losses"]
@@ -129,9 +129,11 @@ class League(commands.Cog):
             embed.add_field(name=match.has_won + " " + match.game_mode,
                             value= match.champion + " (" + str(match.kda[0]) + "/" + str(match.kda[1]) + "/" + str(match.kda[2]) + ") " + match.lane, inline=False)
 
-        # TODO: Add tracker and op links
-        #embed.add_field(name="Links",
-        #                value="Tracker.gg • OP.gg", inline=False)
+
+        url_tracker = "https://www.op.gg/summoners/euw/" + summoner_name.replace(" ", "%20")
+
+        embed.add_field(name="Links",
+                        value="[OP.gg](" + url_tracker + ")", inline=False)
 
         # Set the summoner icon
         embed.set_thumbnail(url=URL_API_ICON[0] + str(summoner_icon) + URL_API_ICON[1])
