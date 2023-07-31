@@ -15,6 +15,7 @@ URL_API_REGION = "https://europe.api.riotgames.com"
 ENDPOINT_SUMMONER = "/lol/summoner/v4/summoners/by-name/"
 ENDPOINT_MATCHES = ["/lol/match/v5/matches/by-puuid/", "/ids"]
 ENDPOINT_MATCH = "/lol/match/v5/matches/"
+ENDPOINT_LEAGUE = "/lol/league/v4/entries/by-summoner/"
 
 # TODO: Automatically update version
 # https://ddragon.leagueoflegends.com/api/versions.json
@@ -59,6 +60,7 @@ class League(commands.Cog):
         # Save summoner information
         summoner_name = data_summoner["name"]
         summoner_puuid = data_summoner["puuid"]
+        summoner_id = data_summoner["id"]
         summoner_icon = data_summoner["profileIconId"]
         summoner_level = data_summoner["summonerLevel"]
 
@@ -84,8 +86,40 @@ class League(commands.Cog):
             await match.get_match_data()       # Fill match object with data
             matches.append(match)              # Add match object to list
         
+        request_league = URL_API + ENDPOINT_LEAGUE + summoner_id + "?api_key=" + RIOT_API_KEY
+        
+        # Try to get ranks
+        try:
+            data_league = requests.get(request_league, timeout=5)
+        except requests.exceptions.Timeout:
+            await ctx.send(MSG_ERROR_TIMEOUT)
+            return
+        
+        data_league = data_league.json() # Convert response to JSON
+        
+        result_league = ""
+        for league in data_league:
+            queue_type = league["queueType"]
+            match queue_type:
+                case "RANKED_SOLO_5x5":
+                    queue_type = "Ranked Solo/Duo"
+                case "RANKED_TEAM_5x5":
+                    queue_type = "Ranked Flex"
+                case _:
+                    break
+            
+            wins = league["wins"]
+            losses = league["losses"]
+            league_points = league["leaguePoints"]
+            
+            tier = league["tier"]
+            rank = league["rank"]
+            
+            result = tier + " " + rank + " (" + str(league_points) + " LP) • " + str(wins) + "W/" + str(losses) + "L (" + queue_type + ")\n"
+            result_league += result
+        
         embed = discord.Embed(title=summoner_name + " • Level " + str(summoner_level),
-                            description="RANKS GO HERE",
+                            description=result_league,
                             colour=0x091428)
 
         embed.set_author(name="IDK WHAT GOES HERE",
@@ -116,6 +150,7 @@ class LeaugeMatch:
         self.match_id = match_id
 
         # Match information
+        self.duration = 0
         self.game_mode = "Unknown"
         self.has_won = "Unknown"
         self.champion = "Unknown"
@@ -143,6 +178,10 @@ class LeaugeMatch:
                     self.has_won = "🟩"
                 else:
                     self.has_won = "🟥"
+
+                self.duration = data_match["info"]["gameDuration"]
+                if self.duration < 240:
+                    self.has_won = "⬜ Remake -"
 
                 self.champion = participant["championName"]
 
