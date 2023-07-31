@@ -122,16 +122,16 @@ class League(commands.Cog):
                             description=result_league,
                             colour=0x091428)
 
-        embed.set_author(name="IDK WHAT GOES HERE",
-                        icon_url="")
+        embed.set_author(name="League of Legends",
+                        icon_url="https://ddragon.leagueoflegends.com/cdn/13.14.1/img/item/1052.png")
 
         for match in matches:
             embed.add_field(name=match.has_won + " " + match.game_mode,
                             value= match.champion + " (" + str(match.kda[0]) + "/" + str(match.kda[1]) + "/" + str(match.kda[2]) + ") " + match.lane, inline=False)
 
         # TODO: Add tracker and op links
-        embed.add_field(name="Links",
-                        value="Tracker.gg • OP.gg", inline=False)
+        #embed.add_field(name="Links",
+        #                value="Tracker.gg • OP.gg", inline=False)
         
         # Set the summoner icon
         embed.set_thumbnail(url=URL_API_ICON[0] + str(summoner_icon) + URL_API_ICON[1])
@@ -206,16 +206,16 @@ class LeaugeMatch:
         queue_id = data_match["info"]["queueId"] # Get queue ID
         match queue_id:
             case 420:
-                self.game_mode = "Ranked Solo/Duo"
+                self.game_mode = "Ranked Solo/Duo 🏆"
             case 440:
-                self.game_mode = "Ranked Flex"
+                self.game_mode = "Ranked Flex 🏆"
             case 430:
-                self.game_mode = "Normal Blind Pick"
+                self.game_mode = "Normal Blind Pick 🎈"
             case 400:
-                self.game_mode = "Normal Draft Pick"
+                self.game_mode = "Normal Draft Pick 🎈"
             case 450:
-                self.game_mode = "ARAM"
+                self.game_mode = "ARAM 🎲"
             case 0:
-                self.game_mode = "Custom"
+                self.game_mode = "Custom 🛠️"
             case _:
-                self.game_mode = "Event"
+                self.game_mode = "Event 🎉"
