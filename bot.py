@@ -12,6 +12,7 @@ from discord.ext import commands, tasks
 # Import cogs
 from cogs.essentials import Essentials
 from cogs.valorant import Valorant
+from cogs.league import League
 from cogs.cinema import Cinema
 
 # Import modules
@@ -45,6 +46,7 @@ async def on_ready():
 
     await bot.add_cog(Essentials(bot))  # Add greetings cog
     await bot.add_cog(Valorant(bot))  # Add valorant cog
+    await bot.add_cog(League(bot))  # Add league cog
     await bot.add_cog(Cinema(bot))  # Add cinema cog
 
     utils.botLog("Beep-bop! K1-B0 is ready to roll!")  # Print ready message
