@@ -16,7 +16,9 @@ ENDPOINT_SUMMONER = "/lol/summoner/v4/summoners/by-name/"
 ENDPOINT_MATCHES = ["/lol/match/v5/matches/by-puuid/", "/ids"]
 ENDPOINT_MATCH = "/lol/match/v5/matches/"
 
-URL_API_ICON = ["http://ddragon.leagueoflegends.com/cdn/10.15.1/img/profileicon/", ".png"]
+# TODO: Automatically update version
+# https://ddragon.leagueoflegends.com/api/versions.json
+URL_API_ICON = ["http://ddragon.leagueoflegends.com/cdn/13.14.1/img/profileicon/", ".png"]
 
 class League(commands.Cog):
     """League cog for the bot."""
@@ -81,6 +83,29 @@ class League(commands.Cog):
             match = LeaugeMatch(ctx, summoner_puuid, match_id) # Create match object
             await match.get_match_data()       # Fill match object with data
             matches.append(match)              # Add match object to list
+        
+        embed = discord.Embed(title=summoner_name + " • Level " + str(summoner_level),
+                            description="RANKS GO HERE",
+                            colour=0x091428)
+
+        embed.set_author(name="IDK WHAT GOES HERE",
+                        icon_url="")
+
+        for match in matches:
+            embed.add_field(name=match.has_won + " " + match.game_mode,
+                            value= match.champion + " (" + str(match.kda[0]) + "/" + str(match.kda[1]) + "/" + str(match.kda[2]) + ") " + match.lane, inline=False)
+
+        # TODO: Add tracker and op links
+        embed.add_field(name="Links",
+                        value="Tracker.gg • OP.gg", inline=False)
+        
+        # Set the summoner icon
+        embed.set_thumbnail(url=URL_API_ICON[0] + str(summoner_icon) + URL_API_ICON[1])
+
+        # Set the footer
+        embed.set_footer(text="❤️ Keebos League Tracker")
+
+        await ctx.send(embed=embed)
 
 
 class LeaugeMatch:
@@ -92,8 +117,9 @@ class LeaugeMatch:
 
         # Match information
         self.game_mode = "Unknown"
-        self.has_won = "None"
-        self.champion = "None"
+        self.has_won = "Unknown"
+        self.champion = "Unknown"
+        self.lane = "Unknown"
         self.kda = [0, 0, 0]
 
     async def get_match_data(self):
@@ -114,11 +140,27 @@ class LeaugeMatch:
             if participant["puuid"] == self.summoner_puuid:
                 self.has_won = participant["win"]
                 if self.has_won:
-                    self.has_won = "Victory"
+                    self.has_won = "🟩"
                 else:
-                    self.has_won = "Defeat"
+                    self.has_won = "🟥"
 
                 self.champion = participant["championName"]
+
+                self.lane = participant["teamPosition"]
+                match self.lane:
+                    case "TOP":
+                        self.lane = "Top"
+                    case "JUNGLE":
+                        self.lane = "Jungle"
+                    case "MIDDLE":
+                        self.lane = "Mid"
+                    case "BOTTOM":
+                        self.lane = "Bot"
+                    case "UTILITY":
+                        self.lane = "Support"
+                    case _:
+                        self.lane = ""
+
                 self.kda = [participant["kills"], participant["deaths"], participant["assists"]]
 
         # Determine game mode
@@ -134,5 +176,7 @@ class LeaugeMatch:
                 self.game_mode = "Normal Draft Pick"
             case 450:
                 self.game_mode = "ARAM"
+            case 0:
+                self.game_mode = "Custom"
             case _:
                 self.game_mode = "Event"
