@@ -38,3 +38,11 @@ class Essentials(commands.Cog):
                         value="`?movie <Movie Name>`:\nRetrieves and displays information about the specified movie from IMDb.")
 
         await ctx.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_message(self, ctx):
+        """Sends a message when someone mentions Kristina."""
+        message = ctx.content.lower()
+        if message.find("kristina") != -1:
+            await ctx.channel.send("Highway!")
