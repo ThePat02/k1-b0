@@ -17,9 +17,17 @@ ENDPOINT_MATCHES = ["/lol/match/v5/matches/by-puuid/", "/ids"]
 ENDPOINT_MATCH = "/lol/match/v5/matches/"
 ENDPOINT_LEAGUE = "/lol/league/v4/entries/by-summoner/"
 
-# TODO: Automatically update version
-# https://ddragon.leagueoflegends.com/api/versions.json
-URL_API_ICON = ["http://ddragon.leagueoflegends.com/cdn/13.14.1/img/profileicon/", ".png"]
+URL_DDRAGON_VERSION = "https://ddragon.leagueoflegends.com/api/versions.json"
+CURRENT_VERSION = "13.14.1" # Define fallback version
+
+# Try to get current version
+try:
+    CURRENT_VERSION = requests.get(URL_DDRAGON_VERSION, timeout=5)
+    CURRENT_VERSION = CURRENT_VERSION.json()[0]
+except requests.exceptions.Timeout:
+    print(MSG_ERROR_TIMEOUT)
+    
+URL_API_ICON = ["http://ddragon.leagueoflegends.com/cdn/" + CURRENT_VERSION + "/img/profileicon/", ".png"]
 
 class League(commands.Cog):
     """League cog for the bot."""
