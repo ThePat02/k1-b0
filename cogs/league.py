@@ -26,7 +26,7 @@ try:
     CURRENT_VERSION = CURRENT_VERSION.json()[0]
 except requests.exceptions.Timeout:
     print(MSG_ERROR_TIMEOUT)
-    
+
 URL_API_ICON = ["http://ddragon.leagueoflegends.com/cdn/" + CURRENT_VERSION + "/img/profileicon/", ".png"]
 
 class League(commands.Cog):
@@ -56,6 +56,7 @@ class League(commands.Cog):
         try:
             # If status_code is present, the request failed
             # If status_code is not present, the request succeeded
+            # pylint: disable=pointless-statement
             data_summoner["status"]["status_code"]
 
             # TODO: Implement other errors
