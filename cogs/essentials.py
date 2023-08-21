@@ -3,6 +3,8 @@
 import discord
 import discord.ext.commands as commands
 
+import random
+
 class Essentials(commands.Cog):
     """Essentials cog for the bot."""
     def __init__(self, bot):
@@ -26,7 +28,7 @@ class Essentials(commands.Cog):
         embed.set_author(name="K1-B0")
 
         embed.add_field(name="Essentials",
-                        value="`?help`:\nShows a list of my available commands.", inline=False)
+                        value="`?help`:\nShows a list of my available commands.\n\n`?roll <NdN>`:\nRoll a dice using the NdN syntax.", inline=False)
         
         embed.add_field(name="Valorant",
                         value="`?valo <Username#Tag>`:\nRetrieves and displays the Valorant profile information and the most recent matches of the specified user.\n\n`?valo @DiscordUser`:\nRetrieves and displays the Valorant profile information and the most recent matches of the Discord user, provided they have linked their Riot-ID.\n\n`?link <Username#Tag>`:\nEstablishes a connection between your Riot-ID and Discord-ID. If the link already exists, it will update the associated ID.\n\n`?unlink`:\nRemoves the link between your Discord-ID and the associated Riot-ID.", inline=False)
@@ -38,6 +40,19 @@ class Essentials(commands.Cog):
                         value="`?movie <Movie Name>`:\nRetrieves and displays information about the specified movie from IMDb.")
 
         await ctx.send(embed=embed)
+
+
+    @commands.command("roll")
+    async def roll_dice(self, ctx, dice):
+        """Rolls a dice in NdN format."""
+        try:
+            rolls, limit = map(int, dice.split('d'))
+        except Exception:
+            await ctx.send("Format has to be in NdN!")
+            return
+
+        result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+        await ctx.send("🎲 You rolled: " + result)
 
 
     @commands.Cog.listener()
