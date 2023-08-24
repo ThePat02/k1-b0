@@ -50,6 +50,9 @@ class Essentials(commands.Cog):
         except Exception:
             await ctx.send("Format has to be in NdN!")
             return
+        
+        # Sort from highest to lowest
+        rolls
 
         result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
         await ctx.send("🎲 You rolled: " + result)
@@ -59,5 +62,12 @@ class Essentials(commands.Cog):
     async def on_message(self, ctx):
         """Sends a message when someone mentions Kristina."""
         message = ctx.content.lower()
+        author = ctx.author
         if message.find("kristina") != -1:
             await ctx.channel.send("Highway!")
+        
+        jake_moe = 690166089073688642
+        
+        if author.id == jake_moe:
+            # React with a winking emoji
+            await ctx.add_reaction("\U0001F609")
