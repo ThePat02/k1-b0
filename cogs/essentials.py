@@ -67,7 +67,8 @@ class Essentials(commands.Cog):
             await ctx.channel.send("Highway!")
         
         jake_moe = 690166089073688642
+        does_include_winking_emoji = message.find("\U0001F609") != -1
         
-        if author.id == jake_moe:
+        if author.id == jake_moe or does_include_winking_emoji:
             # React with a winking emoji
             await ctx.add_reaction("\U0001F609")
