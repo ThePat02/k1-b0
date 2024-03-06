@@ -65,7 +65,7 @@ class Essentials(commands.Cog):
     async def pet(self, ctx):
         """Sends a gif of keebo getting pet."""
         await ctx.channel.send("https://media.tenor.com/8eVWjHu651AAAAAi/keebo-k1b0.gif")
-        await ctx.add_reaction("❤️")
+        await ctx.message.add_reaction("❤️")
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
