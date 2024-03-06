@@ -39,6 +39,9 @@ class Essentials(commands.Cog):
         embed.add_field(name="Cinema",
                         value="`?movie <Movie Name>`:\nRetrieves and displays information about the specified movie from IMDb.")
 
+        embed.add_field(name="Pet Keebo",
+                        value="`?pet`:\Pets Keebo for being such a good boy.")
+
         await ctx.send(embed=embed)
 
 
