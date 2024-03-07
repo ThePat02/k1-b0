@@ -148,6 +148,10 @@ class Valorant(commands.Cog):
     @commands.command()
     async def valo(self, ctx, user):
         """Fetches the user's Valorant information and displays it"""
+        ctx.send("Command currently unavailable. :(")
+        return
+
+
         if user.startswith("<@") and user.endswith(">"):
             user = user[2:-1] # Trim the first 2 and last 1 characters
 
