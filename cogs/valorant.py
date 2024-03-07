@@ -205,7 +205,8 @@ class Valorant(commands.Cog):
         user[0] = user_info["data"]["name"]
         user[1] = user_info["data"]["tag"]
 
-        user[0] = user[0].replace("%20", " ")  # Replace %20 with blank spaces again
+        # Replace %20 with blank spaces again
+        user[0] = user[0].replace("%20", " ")
 
         # Setup user information
         username = user_info["data"]["name"] + "#" + user_info["data"]["tag"]
