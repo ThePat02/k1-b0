@@ -148,7 +148,7 @@ class Valorant(commands.Cog):
     @commands.command()
     async def valo(self, ctx, user):
         """Fetches the user's Valorant information and displays it"""
-        ctx.send("Command currently unavailable. :(")
+        await ctx.send("Command currently unavailable. :(")
         return
 
 
