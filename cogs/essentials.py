@@ -18,7 +18,7 @@ class Essentials(commands.Cog):
         if channel is not None:
             await channel.send(f'Welcome to Antarctica, {member.mention}. I am K1-B0, the Ultimate Robot!')
 
-    @commands.command()
+    @commands.command("help")
     async def help(self, ctx):
         """Sends information about the bot's commands."""
         embed = discord.Embed(title="Keebo, The Ultimate Robot",
